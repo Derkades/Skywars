@@ -1,6 +1,7 @@
 package xyz.derkades.skywars;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,22 +15,15 @@ public class Skywars extends JavaPlugin implements Listener {
 	
 	private static int COUNTDOWN_TIME = 10;
 	
-	public Skywars() {
-		plugin = this;
-	}
-	
-	private static Skywars plugin;
-	
-	public static Skywars getPlugin() {
-		return plugin;
-	}
-	
+	public static Skywars plugin;	
 	public static Map map;
 	public static Mode mode;
 	public static World world;
 	
 	@Override
 	public void onEnable() {
+		plugin = this;
+		
 		saveDefaultConfig();
 		
 		if (Bukkit.getMaxPlayers() != 1) {
@@ -67,6 +61,8 @@ public class Skywars extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		
 		new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 5*20);
+		
+		Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
 	}
 	
 	private void disablePlugin(String reason) {
@@ -112,6 +108,5 @@ public class Skywars extends JavaPlugin implements Listener {
 		}
 		
 	}
-		
 
 }

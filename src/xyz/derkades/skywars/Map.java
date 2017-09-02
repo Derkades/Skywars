@@ -5,19 +5,24 @@ import java.util.List;
 
 import org.bukkit.Location;
 
+import xyz.derkades.skywars.loot.LootChest;
+
 public enum Map {
 	
-	ESSENCIA("Essência", null, Mode.SOLO),
-	FLORESTA("Floresta", null, Mode.TEAMS),
-	INFERNO("Inferno", null, Mode.SOLO, Mode.TEAMS);
+	ESSENCIA("Essência", null, null, Mode.SOLO),
+	FLORESTA("Floresta", null, null, Mode.TEAMS),
+	INFERNO("Inferno", null, null, Mode.SOLO, Mode.TEAMS);
 	
 	private String name;
 	private List<Location> islands;
+	private LootChest[] loot;
 	private List<Mode> supportedModes;
 	
-	Map(String name, Location[] islands, Mode... supportedModes){
+	Map(String name, Location[] islands, LootChest[] loot, Mode... supportedModes){
 		this.name = name;
 		if (islands != null) this.islands = Arrays.asList(islands);
+		this.loot = loot;
+		if (loot == null) loot = new LootChest[] {};
 		this.supportedModes = Arrays.asList(supportedModes);
 	}
 	
@@ -27,6 +32,10 @@ public enum Map {
 	
 	public List<Location> getIslandLocations() {
 		return islands;
+	}
+	
+	public LootChest[] getLoot() {
+		return loot;
 	}
 	
 	public List<Mode> getSupportedModes() {
