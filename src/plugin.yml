@@ -1,0 +1,5 @@
+name: Skywars
+main: xyz.derkades.skywars.Skywars
+version: '@project.version@'
+author: Derkades
+description: 'Custom skywars plugin'
