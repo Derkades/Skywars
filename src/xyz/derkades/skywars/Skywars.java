@@ -3,9 +3,13 @@ package xyz.derkades.skywars;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -63,6 +67,17 @@ public class Skywars extends JavaPlugin implements Listener {
 		new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 5*20);
 		
 		Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
+		
+		world.setGameRuleValue("announceAdvancements", "false");
+		world.setGameRuleValue("doFireTick", "false");
+		world.setGameRuleValue("doMobLoot", "false");
+		world.setGameRuleValue("doMobSpawning", "false");
+		world.setGameRuleValue("announceAdvancements", "false");
+		world.setGameRuleValue("spawnRadius", "0");
+		world.setGameRuleValue("mobGriefing", "true");
+		
+		world.setGameRuleValue("doDaylightCycle", "false");
+		world.setTime(6000);
 	}
 	
 	private void disablePlugin(String reason) {
@@ -76,6 +91,33 @@ public class Skywars extends JavaPlugin implements Listener {
 	    if ((Bukkit.getOnlinePlayers().size() < maxplayers)  && (event.getResult() == Result.KICK_FULL)) {
 	        event.allow();
 	    }
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onDeath(PlayerDeathEvent event) {
+		DamageCause cause = event.getEntity().getLastDamageCause().getCause();
+		
+		Player player = event.getEntity();
+		LivingEntity killer = player.getKiller();
+		
+		if (killer != null && cause == DamageCause.VOID) {
+			event.setDeathMessage(Message.KNOCKED_IN_VOID_BY.get(player.getName(), killer.getName()));
+		} else if (killer == null && cause == DamageCause.VOID) {
+			event.setDeathMessage(Message.FELL_IN_VOID.get(player.getName()));
+		} else if (killer != null && (cause == DamageCause.ENTITY_ATTACK || cause == DamageCause.ENTITY_SWEEP_ATTACK)) {
+			event.setDeathMessage(Message.KILLED_BY.get(player.getName(), killer.getName()));
+		} else if (killer != null && cause == DamageCause.MAGIC) {
+			event.setDeathMessage(Message.KILLED_USING_MAGIC_BY.get(player.getName(), killer.getName()));
+		} else if (killer == null && cause == DamageCause.FALL) {
+			event.setDeathMessage(Message.FELL_FROM_HIGH_PLACE.get(player.getName()));
+		} else if (killer != null && cause == DamageCause.FALL) {
+			event.setDeathMessage(Message.FELL_FROM_HIGH_PLACE_BY.get(player.getName(), killer.getName()));
+		} else {
+			event.setDeathMessage("");
+			getLogger().warning("Unsupported death cause!");
+			getLogger().warning("Cause: " + cause);
+			getLogger().warning("Killed by player? " + (killer != null));
+		}
 	}
 	
 	private class StartGameWhenEnoughPlayers extends BukkitRunnable {
