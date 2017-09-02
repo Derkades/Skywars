@@ -3,12 +3,13 @@ package xyz.derkades.skywars;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Skywars extends JavaPlugin {
+public class Skywars extends JavaPlugin implements Listener {
 	
 	private static int COUNTDOWN_TIME = 10;
 	
@@ -22,8 +23,8 @@ public class Skywars extends JavaPlugin {
 		return plugin;
 	}
 	
-	public static Map MAP;
-	public static Mode MODE;
+	public Map map;
+	public Mode mode;
 	
 	@Override
 	public void onEnable() {
@@ -31,19 +32,29 @@ public class Skywars extends JavaPlugin {
 		
 		if (Bukkit.getMaxPlayers() != 1) {
 			disablePlugin("Max players in server.properties must be set to 1.");
+			return;
 		}
 		
-		MAP = Map.valueOf(getConfig().getString("map"));
-		MODE = Mode.valueOf(getConfig().getString("mode"));
+		String mapString = getConfig().getString("map");
+		String modeString = getConfig().getString("mode");
 		
-		if (MAP == null || MODE == null) {
+		if (mapString == null || modeString == null) {
 			disablePlugin("Config is incorrect.");
 			return;
 		}
 		
+		try {
+			map = Map.valueOf(mapString);
+			mode = Mode.valueOf(modeString);
+		} catch (IllegalArgumentException e) {
+			disablePlugin("Invalid map or mode name");
+		}
+		
 		getLogger().info("Plugin has started. The game will start automatically when enough players are online.");
-		getLogger().info("Map: " + MAP.getName());
-		getLogger().info("Mode: " + MODE.toString());
+		getLogger().info("Map: " + map.getName());
+		getLogger().info("Mode: " + mode.toString());
+		
+		getServer().getPluginManager().registerEvents(this, this);
 		
 		new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 5*20);
 	}
@@ -55,7 +66,7 @@ public class Skywars extends JavaPlugin {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onLogin(PlayerLoginEvent event) {
-	    int maxplayers = MAP.getRequiredPlayers(MODE);
+	    int maxplayers = map.getRequiredPlayers(mode);
 	    if ((Bukkit.getOnlinePlayers().size() < maxplayers)  && (event.getResult() == Result.KICK_FULL)) {
 	        event.allow();
 	    }
@@ -65,7 +76,7 @@ public class Skywars extends JavaPlugin {
 		
 		@Override
 		public void run() {
-			if (Bukkit.getOnlinePlayers().size() >= MAP.getRequiredPlayers(MODE)) {
+			if (Bukkit.getOnlinePlayers().size() >= map.getRequiredPlayers(mode)) {
 				//Enough players online, start game after countdown
 				
 				new BukkitRunnable() {
@@ -78,7 +89,7 @@ public class Skywars extends JavaPlugin {
 						}
 						
 						if (timeLeft <= 0) {
-							new Game(MAP, MODE).start();
+							new Game(map, mode).start();
 							this.cancel();
 							return;
 						}
