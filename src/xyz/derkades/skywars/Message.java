@@ -17,6 +17,11 @@ public enum Message {
 	KITS_MENU_TITLE("Kits"),
 	KIT_SELECTED("You have selected %s"),
 	
+	MINUTE_LEFT("1 minute left until deathmatch."),
+	MINUTES_LEFT("%s minutes left until deathmatch."),
+	SECOND_LEFT("1 seconds left until deathmatch."),
+	SECONDS_LEFT("%s seconds left until deathmatch."),
+	
 	;
 	
 	private String message;

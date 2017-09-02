@@ -12,8 +12,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -37,7 +35,6 @@ implements ConfigurationSerializable
 	private List<SidebarString> entries;
 	private transient Scoreboard bukkitScoreboard;
 	private transient Objective bukkitObjective;
-	private transient BukkitTask updateTask;
 	private String title;
 	private Player setPlaceholdersOnUpdate = null;
 	
@@ -45,10 +42,9 @@ implements ConfigurationSerializable
 	 * Constructs a new Sidebar.
 	 * @param title (String) - the title of the sidebar
 	 * @param plugin (Plugin) - your plugin
-	 * @param updateDelayInTicks (int) - how many server ticks to wait in between each update. 20 = 1 second
 	 * @param entries (SidebarString...) - all the entries
 	 */
-	public Sidebar(String title, Plugin plugin, int updateDelayInTicks, SidebarString... entries)
+	public Sidebar(String title, Plugin plugin, SidebarString... entries)
 	{
 		
 		bukkitScoreboard = bukkitManager.getNewScoreboard();
@@ -61,8 +57,6 @@ implements ConfigurationSerializable
 		this.title = title;
 		
 		update();
-		
-		setUpdateDelay(plugin, updateDelayInTicks);
 		
 		SidebarAPI.registerSidebar(this);
 		
@@ -117,36 +111,6 @@ implements ConfigurationSerializable
 	{
 		setPlaceholdersOnUpdate = player;
 		return this;
-	}
-	
-	/**
-	 * Sets how many server ticks to wait in between each update.
-	 * @param plugin (Plugin) - your plugin
-	 * @param delayInTicks (int) - the ticks
-	 * @return (Sidebar) - this Sidebar Object, for chaining.
-	 */
-	public Sidebar setUpdateDelay(Plugin plugin, int delayInTicks)
-	{
-		
-		if (delayInTicks < 1)
-			throw new IllegalArgumentException("delayInTicks cannot be less than 1!");
-		
-		if (updateTask != null)
-			updateTask.cancel();
-		
-		updateTask = (new BukkitRunnable()
-		{
-
-			@Override
-			public void run()
-			{
-				update();
-			}
-			
-		}).runTaskTimer(plugin, delayInTicks, delayInTicks);
-		
-		return this;
-		
 	}
 	
 	/**

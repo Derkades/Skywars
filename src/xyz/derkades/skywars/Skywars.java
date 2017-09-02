@@ -17,7 +17,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Skywars extends JavaPlugin implements Listener {
 	
-	private static int COUNTDOWN_TIME = 10;
+	private static final int COUNTDOWN_TIME = 10;
+	public static final int GAME_TIME = 15 * 60;
 	
 	public static Skywars plugin;	
 	public static Map map;

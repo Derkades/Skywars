@@ -6,6 +6,7 @@ scoreboard:
 - '&aYou are playing skywars'
 - 'Map: {map}'
 - 'Mode: {mode}'
+- 'Time left: {time}'
 
 kits-rows: 3
 
