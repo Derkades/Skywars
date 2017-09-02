@@ -1,6 +1,7 @@
 package xyz.derkades.skywars;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,8 +24,9 @@ public class Skywars extends JavaPlugin implements Listener {
 		return plugin;
 	}
 	
-	public Map map;
-	public Mode mode;
+	public static Map map;
+	public static Mode mode;
+	public static World world;
 	
 	@Override
 	public void onEnable() {
@@ -48,6 +50,14 @@ public class Skywars extends JavaPlugin implements Listener {
 			mode = Mode.valueOf(modeString);
 		} catch (IllegalArgumentException e) {
 			disablePlugin("Invalid map or mode name");
+			return;
+		}
+		
+		world = Bukkit.getWorld(mapString);
+		
+		if (world == null) {
+			disablePlugin("Your world must be called " + mapString + " and set in server.properties");
+			return;
 		}
 		
 		getLogger().info("Plugin has started. The game will start automatically when enough players are online.");
