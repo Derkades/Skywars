@@ -17,7 +17,7 @@ public enum Map {
 	
 	Map(String name, Location[] islands, Mode... supportedModes){
 		this.name = name;
-		this.islands = Arrays.asList(islands);
+		if (islands != null) this.islands = Arrays.asList(islands);
 		this.supportedModes = Arrays.asList(supportedModes);
 	}
 	
