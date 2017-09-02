@@ -12,7 +12,10 @@ public enum Message {
 	KILLED_BY("%s has been killed by %s."),
 	KILLED_USING_MAGIC_BY("%s has been killed by %s using magic."),
 	FELL_FROM_HIGH_PLACE("%s fell from a high place."),
-	FELL_FROM_HIGH_PLACE_BY("%s was thrown onto lower ground by %s")
+	FELL_FROM_HIGH_PLACE_BY("%s was thrown onto lower ground by %s"),
+	
+	KITS_MENU_TITLE("Kits"),
+	KIT_SELECTED("You have selected %s"),
 	
 	;
 	

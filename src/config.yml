@@ -1,2 +1,33 @@
 map: INFERNO
 mode: TEAMS
+
+scoreboard-title: '&bTitle'
+scoreboard:
+- '&aYou are playing skywars'
+- 'Map: {map}'
+- 'Mode: {mode}'
+
+kits-rows: 3
+
+kits: # Use this website to generate commands for fancy items: http://mapmaking.fr/give/ - for Player fill in {player}
+
+  0:
+    item: GRASS
+    data: 0
+    name: 'Sample kit'
+    lore:
+     - This is line 1
+     - This is line 2
+    commands:
+     - 'give {player} stone 32'
+     - 'give {player} minecraft:golden_sword 1 0 {display:{Name:"§5Sword of Death",Lore:["Some lore","Second line"]},Unbreakable:1,ench:[{id:17,lvl:2},{id:19,lvl:7}]}'
+  
+  3:
+    item: WOOL
+    data: 3
+    name: 'Second sample kit'
+    lore:
+     - This is not line 2
+     - This is not line 1
+    commands:
+     - 'give {player} sponge 6'
