@@ -125,7 +125,9 @@ public class Skywars extends JavaPlugin implements Listener {
 		
 		@Override
 		public void run() {
-			if (Bukkit.getOnlinePlayers().size() >= map.getRequiredPlayers(mode)) {
+			int online = Bukkit.getOnlinePlayers().size();
+			int required = map.getRequiredPlayers(mode);
+			if (online >= required) {
 				//Enough players online, start game after countdown
 				
 				new BukkitRunnable() {
@@ -146,7 +148,8 @@ public class Skywars extends JavaPlugin implements Listener {
 						timeLeft--;
 					}
 				}.runTaskTimer(Skywars.this, 0, 20);
-				
+			} else {
+				getLogger().info(String.format("Not enough players (%s/%s)", online, required));
 			}
 		}
 		
