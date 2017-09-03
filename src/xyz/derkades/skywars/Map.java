@@ -1,5 +1,6 @@
 package xyz.derkades.skywars;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +32,10 @@ public enum Map {
 	}
 	
 	public List<Location> getIslandLocations() {
+		if (islands == null) {
+			return new ArrayList<>();
+		}
+		
 		return islands;
 	}
 	
