@@ -44,6 +44,10 @@ public enum Map {
 	}
 	
 	public LootChest[] getLoot() {
+		if (loot == null) {
+			return new LootChest[] {};
+		}
+		
 		return loot;
 	}
 	
