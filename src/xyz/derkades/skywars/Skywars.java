@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -98,8 +99,18 @@ public class Skywars extends JavaPlugin implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		
+		event.setJoinMessage(Message.JOIN.get(player.getName(), Bukkit.getOnlinePlayers(), map.getRequiredPlayers(mode)));
+		
 		player.setGameMode(GameMode.ADVENTURE); //So players can't break blocks in the lobby
 		player.teleport(new Location(world, 0, 176, 0));
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		
+		event.setQuitMessage(Message.QUIT.get(player.getName()));				
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

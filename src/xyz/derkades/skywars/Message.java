@@ -32,6 +32,9 @@ public enum Message {
 	KITS_MENU_TITLE("Kits"),
 	KIT_SELECTED("You have selected %s"),
 	
+	JOIN("%s joined (%s/%s)"),
+	QUIT("%s left"),
+	
 	;
 	
 	private String message;
