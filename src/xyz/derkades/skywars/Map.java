@@ -16,8 +16,8 @@ public enum Map {
 	INFERNO("Inferno", 
 			
 			new Point[] {
-					//new Point(0.5, 110, -87.5, 0, 0),
-					new Point(54.5, 110, -52.5, 25, 0),
+					//new Point(0, 110, -87, 0, 0),
+					new Point(54, 110, -52, 25, 0),
 			}, 
 			
 			null, Mode.SOLO, Mode.TEAMS);
@@ -90,7 +90,7 @@ public enum Map {
 		private float yaw;
 		private float pitch;
 		
-		Point(double x, double y, double z, float yaw, float pitch){
+		Point(int x, int y, int z, float yaw, float pitch){
 			this.x = x;
 			this.y = y;
 			this.z = z;

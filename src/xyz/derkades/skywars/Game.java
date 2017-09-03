@@ -106,23 +106,25 @@ public class Game {
 		if (mode == Mode.SOLO) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				Location island = islands.remove(0);
+				island.add(0.5, 0, 0.5);
 				new SkywarsPlayer(player).getCage().spawn(island);
 				player.teleport(island);
 			}
 		} else if (mode == Mode.TEAMS) {
-			Location island = islands.remove(0);
+			Location island = null;
 			int i = 0;
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				i++;
+			for (Player player : Bukkit.getOnlinePlayers()) {				
+				if (i % 2 == 0) { //Get new island every 2 players
+					island = islands.remove(0);
+					island.add(0.5, 0, 0.5);
+				}
 				
 				//2 times the same location for two players -> last player cage will override.
 				new SkywarsPlayer(player).getCage().spawn(island);
 				
 				player.teleport(island);
 				
-				if (i % 2 == 0) { //Get new island every 2 players
-					island = islands.remove(0);
-				}
+				i++;
 			}
 		} else {
 			throw new AssertionError();

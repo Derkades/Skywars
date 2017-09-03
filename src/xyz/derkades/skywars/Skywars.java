@@ -69,7 +69,7 @@ public class Skywars extends JavaPlugin implements Listener {
 		
 		getServer().getPluginManager().registerEvents(this, this);
 		
-		new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 5*20);
+		new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 1*20);
 		
 		world.setGameRuleValue("announceAdvancements", "false");
 		world.setGameRuleValue("doFireTick", "false");
@@ -140,6 +140,14 @@ public class Skywars extends JavaPlugin implements Listener {
 		}
 	}
 	
+	public static void debug(String message) {
+		Skywars.plugin.getLogger().info("[debug] " + message);
+	}
+	
+	public static void debug(String message, Object object) {
+		debug(message + ": " + object);
+	}
+	
 	private class StartGameWhenEnoughPlayers extends BukkitRunnable {
 		
 		@Override
@@ -149,11 +157,15 @@ public class Skywars extends JavaPlugin implements Listener {
 			if (online >= required) {
 				//Enough players online, start game after countdown
 				
+				this.cancel(); //Prevent from running again
+				
 				new BukkitRunnable() {
 					
 					int timeLeft = COUNTDOWN_TIME;
 					
 					public void run() {
+						debug("Time left: " + timeLeft);
+						
 						if (timeLeft == 5 || timeLeft == 3 || timeLeft == 2) {
 							Message.GAME_STARTING_IN_SECONDS.broadcast(timeLeft);
 						}
@@ -164,7 +176,6 @@ public class Skywars extends JavaPlugin implements Listener {
 						
 						if (timeLeft <= 0) {
 							this.cancel();
-							StartGameWhenEnoughPlayers.this.cancel();
 							new Game(map, mode).start();
 							return;
 						}

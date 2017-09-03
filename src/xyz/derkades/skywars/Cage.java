@@ -2,6 +2,7 @@ package xyz.derkades.skywars;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 public enum Cage {
@@ -43,14 +44,21 @@ public enum Cage {
 	}
 	
 	public void spawn(final Location location) {
-		final Location outer1 = location.add(-2, -1, -2);
-		final Location outer2 = location.add(2, 4, 2);
+		World world = location.getWorld();
+		int x = location.getBlockX();
+		int y = location.getBlockY();
+		int z = location.getBlockZ();
+
+		final Location outer1 = new Location(world, x - 2, y - 1, z - 2);
+		final Location outer2 = new Location(world, x + 2, y + 4, z - 2);
+		Skywars.debug("outer1-x", outer1.getX());
+		Skywars.debug("location-x", location.getX());
 		fillArea(outer1.getBlockX(), outer1.getBlockY(), outer1.getBlockZ(), 
 				outer2.getBlockX(), outer2.getBlockY(), outer2.getBlockZ(), 
 				this.type, this.data);
-		
-		final Location inner1 = location.add(-1, 0, -1);
-		final Location inner2 = location.add(1, 2, 1);
+
+		final Location inner1 = new Location(world, x - 1, y, z - 1);
+		final Location inner2 = new Location(world, x + 1, y + 3, z + 1);
 		fillArea(inner1.getBlockX(), inner1.getBlockY(), inner1.getBlockZ(), 
 				inner2.getBlockX(), inner2.getBlockY(), inner2.getBlockZ(),
 				Material.AIR, 0);
@@ -66,11 +74,15 @@ public enum Cage {
 	
 	@SuppressWarnings("deprecation")
 	private static void fillArea(int x1, int y1, int z1, int x2, int y2, int z2, Material material, int data) {
-		final int minX = Math.min(x1, x2);
-		final int maxX = Math.max(x1, x2);
-		final int minY = Math.min(y1, y2);
-		final int maxY = Math.max(y1, y2);
-		final int minZ = Math.min(z1, z2);
+		Skywars.debug("x1", x1);
+		Skywars.debug("x2", x2);
+		Skywars.debug("y1", y1);
+		Skywars.debug("y2", y2);
+		final int minX = Math.min(x1, x2); Skywars.debug("minx", minX);
+		final int maxX = Math.max(x1, x2); Skywars.debug("maxx", maxX);
+		final int minY = Math.min(y1, y2); Skywars.debug("miny", minY);
+		final int maxY = Math.max(y1, y2); Skywars.debug("maxy", maxY);
+		final int minZ = Math.min(z1, z2); 
 		final int maxZ = Math.max(z1, z2);
 		
 		for (int x = minX; x <= maxX; x++) {
