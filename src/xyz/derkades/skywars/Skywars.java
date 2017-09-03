@@ -163,9 +163,9 @@ public class Skywars extends JavaPlugin implements Listener {
 						}
 						
 						if (timeLeft <= 0) {
-							new Game(map, mode).start();
 							this.cancel();
 							StartGameWhenEnoughPlayers.this.cancel();
+							new Game(map, mode).start();
 							return;
 						}
 						
