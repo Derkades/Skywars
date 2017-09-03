@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,10 +31,12 @@ public class Game {
 	}
 	
 	public void start() {
+		//Fill loot chests
 		for (LootChest chest : map.getLoot()) {
 			chest.fill();
 		}
 		
+		//Spawn cages and teleport players
 		teleportPlayers();
 		
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -52,11 +55,27 @@ public class Game {
 		
 		new BukkitRunnable() {
 			
-			int secondsLeft = Skywars.GAME_TIME;
+			int secondsLeft = Skywars.GAME_TIME + Skywars.CAGE_OPEN_TIME;
 			
 			@Override
 			public void run() {
 				updateSidebar(title, content, getClockString(secondsLeft));
+				
+				int secondsBeforeCageOpen = secondsLeft - Skywars.GAME_TIME;
+				
+				if (secondsBeforeCageOpen == 5 || secondsBeforeCageOpen == 3 || secondsBeforeCageOpen == 2) {
+					Message.CAGE_OPEN_IN_SECONDS.broadcast(secondsBeforeCageOpen);
+				} else if (secondsBeforeCageOpen == 1) {
+					Message.CAGE_OPEN_IN_SECOND.broadcast();
+				} else if (secondsBeforeCageOpen == 0) {
+					Message.CAGES_OPENED.broadcast();
+					
+					for (Player player : Bukkit.getOnlinePlayers()) {
+						player.setGameMode(GameMode.ADVENTURE);
+					}
+					
+					openCages();
+				}
 				
 				if (secondsLeft == 10*60) {
 					Message.MINUTES_LEFT.broadcast(5);
@@ -88,6 +107,7 @@ public class Game {
 		if (mode == Mode.SOLO) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				Location island = islands.remove(0);
+				new SkywarsPlayer(player).getCage().spawn(island);
 				player.teleport(island);
 			}
 		} else if (mode == Mode.TEAMS) {
@@ -95,6 +115,9 @@ public class Game {
 			int i = 0;
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				i++;
+				
+				//2 times the same location for two players -> last player cage will override.
+				new SkywarsPlayer(player).getCage().spawn(island);
 				
 				player.teleport(island);
 				
@@ -104,6 +127,12 @@ public class Game {
 			}
 		} else {
 			throw new AssertionError();
+		}
+	}
+	
+	private void openCages() {
+		for (Location location : map.getIslandLocations()) {
+			Cage.remove(location);
 		}
 	}
 	

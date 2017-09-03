@@ -12,16 +12,24 @@ public enum Map {
 	
 	ESSENCIA("Essência", null, null, Mode.SOLO),
 	FLORESTA("Floresta", null, null, Mode.TEAMS),
-	INFERNO("Inferno", null, null, Mode.SOLO, Mode.TEAMS);
+	
+	INFERNO("Inferno", 
+			
+			new Point[] {
+					new Point(0.5, 110, -87.5, 0, 0),
+					new Point(54.5, 110, -52.5, 25, 0),
+			}, 
+			
+			null, Mode.SOLO, Mode.TEAMS);
 	
 	private String name;
 	private List<Location> islands;
 	private LootChest[] loot;
 	private List<Mode> supportedModes;
 	
-	Map(String name, Location[] islands, LootChest[] loot, Mode... supportedModes){
+	Map(String name, Point[] islands, LootChest[] loot, Mode... supportedModes){
 		this.name = name;
-		if (islands != null) this.islands = Arrays.asList(islands);
+		this.islands = convertToBukkit(islands);
 		this.loot = loot;
 		if (loot == null) loot = new LootChest[] {};
 		this.supportedModes = Arrays.asList(supportedModes);
@@ -31,11 +39,7 @@ public enum Map {
 		return name;
 	}
 	
-	public List<Location> getIslandLocations() {
-		if (islands == null) {
-			return new ArrayList<>();
-		}
-		
+	public List<Location> getIslandLocations() {		
 		return islands;
 	}
 	
@@ -64,6 +68,36 @@ public enum Map {
 	@Override
 	public String toString() {
 		return name;
+	}
+	
+	private static class Point {
+		
+		private double x;
+		private double y;
+		private double z;
+		private float yaw;
+		private float pitch;
+		
+		Point(double x, double y, double z, float yaw, float pitch){
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.yaw = yaw;
+			this.pitch = pitch;
+		}
+
+	}
+	
+	private static List<Location> convertToBukkit(Point[] points){
+		if (points == null) {
+			return new ArrayList<>();
+		}
+		
+		List<Location> locations = new ArrayList<>();
+		for (Point point : points) {
+			locations.add(new Location(Skywars.world, point.x, point.y, point.z, point.yaw, point.pitch));
+		}
+		return locations;
 	}
 
 }
