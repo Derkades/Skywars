@@ -3,18 +3,20 @@ package xyz.derkades.skywars;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -69,7 +71,12 @@ public class Skywars extends JavaPlugin implements Listener {
 		
 		getServer().getPluginManager().registerEvents(this, this);
 		
-		new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 1*20);
+		if (getConfig().getBoolean("enabled", false)) {
+			new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 1*20);
+		} else {
+			getLogger().warning("Automatic game starting is disabled. Set 'enabled: true' in config.yml");
+		}
+		
 		
 		world.setGameRuleValue("announceAdvancements", "false");
 		world.setGameRuleValue("doFireTick", "false");
@@ -136,7 +143,7 @@ public class Skywars extends JavaPlugin implements Listener {
 			event.setDeathMessage("");
 			getLogger().warning("Unsupported death cause!");
 			getLogger().warning("Cause: " + cause);
-			getLogger().warning("Killed by player? " + (killer != null));
+			getLogger().warning("Killed by player: " + (killer != null));
 		}
 	}
 	

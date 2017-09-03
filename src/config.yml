@@ -1,6 +1,8 @@
 map: INFERNO
 mode: SOLO
 
+enabled: false
+
 scoreboard-title: '&bTitle'
 scoreboard:
 - '&aYou are playing skywars'
