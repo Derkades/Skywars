@@ -16,7 +16,7 @@ public class KitsMenu extends IconMenu {
 	public KitsMenu(Player player) {
 		super(Skywars.plugin, Message.KITS_MENU_TITLE.get(), 9, player);
 		
-		setSize(Skywars.plugin.getConfig().getInt("kits-rows"));
+		setSize(Skywars.plugin.getConfig().getInt("kits-rows") * 9);
 		
 		for (String key : Skywars.plugin.getConfig().getConfigurationSection("kits").getKeys(false)) {
 			ConfigurationSection section = Skywars.plugin.getConfig().getConfigurationSection("kits." + key);
