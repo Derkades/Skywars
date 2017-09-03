@@ -23,15 +23,14 @@ public enum Map {
 			null, Mode.SOLO, Mode.TEAMS);
 	
 	private String name;
-	private List<Location> islands;
+	private Point[] points;
 	private LootChest[] loot;
 	private List<Mode> supportedModes;
 	
 	Map(String name, Point[] islands, LootChest[] loot, Mode... supportedModes){
 		this.name = name;
-		this.islands = convertToBukkit(islands);
+		this.points = islands;
 		this.loot = loot;
-		if (loot == null) loot = new LootChest[] {};
 		this.supportedModes = Arrays.asList(supportedModes);
 	}
 	
@@ -40,7 +39,16 @@ public enum Map {
 	}
 	
 	public List<Location> getIslandLocations() {		
-		return islands;
+		if (points == null) {
+			return new ArrayList<>();
+		}
+		
+		List<Location> locations = new ArrayList<>();
+		for (Point point : points) {
+			locations.add(new Location(Skywars.world, point.x, point.y, point.z, point.yaw, point.pitch));
+		}
+		
+		return locations;
 	}
 	
 	public LootChest[] getLoot() {
@@ -61,9 +69,9 @@ public enum Map {
 		}
 		
 		if (mode == Mode.SOLO) {
-			return islands.size();
+			return points.length;
 		} else if (mode == Mode.TEAMS){
-			return islands.size() * 2;
+			return points.length * 2;
 		} else {
 			throw new AssertionError();
 		}
@@ -90,18 +98,6 @@ public enum Map {
 			this.pitch = pitch;
 		}
 
-	}
-	
-	private static List<Location> convertToBukkit(Point[] points){
-		if (points == null) {
-			return new ArrayList<>();
-		}
-		
-		List<Location> locations = new ArrayList<>();
-		for (Point point : points) {
-			locations.add(new Location(Skywars.world, point.x, point.y, point.z, point.yaw, point.pitch));
-		}
-		return locations;
 	}
 
 }

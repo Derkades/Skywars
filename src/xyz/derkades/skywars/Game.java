@@ -23,8 +23,7 @@ public class Game {
 	private Mode mode;
 	
 	private Sidebar sidebar;
-	
-	
+
 	Game(Map map, Mode mode){
 		this.map = map;
 		this.mode = mode;
