@@ -16,7 +16,7 @@ public enum Map {
 	INFERNO("Inferno", 
 			
 			new Point[] {
-					new Point(0.5, 110, -87.5, 0, 0),
+					//new Point(0.5, 110, -87.5, 0, 0),
 					new Point(54.5, 110, -52.5, 25, 0),
 			}, 
 			
