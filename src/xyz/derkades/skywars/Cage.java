@@ -2,7 +2,6 @@ package xyz.derkades.skywars;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 
 public enum Cage {
@@ -44,24 +43,12 @@ public enum Cage {
 	}
 	
 	public void spawn(final Location location) {
-		World world = location.getWorld();
 		int x = location.getBlockX();
 		int y = location.getBlockY();
 		int z = location.getBlockZ();
 
-		final Location outer1 = new Location(world, x - 2, y - 1, z - 2);
-		final Location outer2 = new Location(world, x + 2, y + 4, z - 2);
-		Skywars.debug("outer1-x", outer1.getX());
-		Skywars.debug("location-x", location.getX());
-		fillArea(outer1.getBlockX(), outer1.getBlockY(), outer1.getBlockZ(), 
-				outer2.getBlockX(), outer2.getBlockY(), outer2.getBlockZ(), 
-				this.type, this.data);
-
-		final Location inner1 = new Location(world, x - 1, y, z - 1);
-		final Location inner2 = new Location(world, x + 1, y + 3, z + 1);
-		fillArea(inner1.getBlockX(), inner1.getBlockY(), inner1.getBlockZ(), 
-				inner2.getBlockX(), inner2.getBlockY(), inner2.getBlockZ(),
-				Material.AIR, 0);
+		fillArea(x - 2, y - 1, z - 2, x + 2, y + 3, z + 2, this.type, this.data); //Fill solid
+		fillArea(x - 1, y, z - 1, x + 1, y + 2, z + 1, this.type, this.data); //Remove inner part
 	}
 	
 	public static void remove(final Location location) {
