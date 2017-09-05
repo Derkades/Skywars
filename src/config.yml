@@ -3,6 +3,9 @@ mode: SOLO
 
 enabled: false
 
+# Absolute path to data file. Data file can have any name
+data-file: 'C:\Users\robin\Desktop\DewDrop test server\skywars-data.yml'
+
 scoreboard-title: '&bTitle'
 scoreboard:
 - '&aYou are playing skywars'

@@ -3,6 +3,7 @@ package xyz.derkades.skywars;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 
 public enum Cage {
 	
@@ -43,41 +44,42 @@ public enum Cage {
 	}
 	
 	public void spawn(final Location location) {
-		int x = location.getBlockX();
-		int y = location.getBlockY();
-		int z = location.getBlockZ();
+		Block block = location.getBlock();
 
-		fillArea(x - 2, y - 1, z - 2, x + 2, y + 3, z + 2, this.type, this.data); //Fill solid
-		fillArea(x - 1, y, z - 1, x + 1, y + 2, z + 1, this.type, this.data); //Remove inner part
+		Block outer1 = block.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST, 2).getRelative(BlockFace.NORTH, 2); 
+		Block outer2 = block.getRelative(BlockFace.UP, 3).getRelative(BlockFace.WEST, 2).getRelative(BlockFace.SOUTH, 2);
+		
+		fillArea(outer1, outer2, this.type, this.data); //Fill solid
+		
+		Block inner1 = block.getRelative(BlockFace.EAST).getRelative(BlockFace.NORTH);
+		Block inner2 = block.getRelative(BlockFace.UP, 2).getRelative(BlockFace.WEST).getRelative(BlockFace.SOUTH);
+		
+		fillArea(inner1, inner2, Material.AIR, 0); //Remove inner part
 	}
 	
 	public static void remove(final Location location) {
-		final Location outer1 = location.add(-2, -1, -2);
-		final Location outer2 = location.add(2, 4, 2);
-		fillArea(outer1.getBlockX(), outer1.getBlockY(), outer1.getBlockZ(), 
-				outer2.getBlockX(), outer2.getBlockY(), outer2.getBlockZ(), 
-				Material.AIR, 0);
+		Block block = location.getBlock();
+		Block outer1 = block.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST, 2).getRelative(BlockFace.NORTH, 2); 
+		Block outer2 = block.getRelative(BlockFace.UP, 3).getRelative(BlockFace.WEST, 2).getRelative(BlockFace.SOUTH, 2);
+		
+		fillArea(outer1, outer2, Material.AIR, 0);
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static void fillArea(int x1, int y1, int z1, int x2, int y2, int z2, Material material, int data) {
-		Skywars.debug("x1", x1);
-		Skywars.debug("x2", x2);
-		Skywars.debug("y1", y1);
-		Skywars.debug("y2", y2);
-		final int minX = Math.min(x1, x2); Skywars.debug("minx", minX);
-		final int maxX = Math.max(x1, x2); Skywars.debug("maxx", maxX);
-		final int minY = Math.min(y1, y2); Skywars.debug("miny", minY);
-		final int maxY = Math.max(y1, y2); Skywars.debug("maxy", maxY);
-		final int minZ = Math.min(z1, z2); 
-		final int maxZ = Math.max(z1, z2);
+	private static void fillArea(Block point1, Block point2, Material material, int data) {
+		final int minX = Math.min(point1.getX(), point2.getX());
+		final int maxX = Math.max(point1.getX(), point2.getX());
+		final int minY = Math.min(point1.getY(), point2.getY());
+		final int maxY = Math.max(point1.getY(), point2.getY());
+		final int minZ = Math.min(point1.getZ(), point2.getZ()); 
+		final int maxZ = Math.max(point1.getZ(), point2.getZ());
 		
 		for (int x = minX; x <= maxX; x++) {
 			for (int y = minY; y <= maxY; y++) {
 				for (int z = minZ; z <= maxZ; z++) {
 					Block block = new Location(Skywars.world, x, y, z).getBlock();
 					block.setType(material);
-					block.setData((byte) data);
+					if (data > 0) block.setData((byte) data);
 				}
 			}
 		}

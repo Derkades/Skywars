@@ -62,7 +62,7 @@ public class Game {
 				
 				int secondsBeforeCageOpen = secondsLeft - Skywars.GAME_TIME;
 				
-				if (secondsBeforeCageOpen == 5 || secondsBeforeCageOpen == 3 || secondsBeforeCageOpen == 2) {
+				if (secondsBeforeCageOpen > 1 && secondsBeforeCageOpen <= 5) {
 					Message.CAGE_OPEN_IN_SECONDS.broadcast(secondsBeforeCageOpen);
 				} else if (secondsBeforeCageOpen == 1) {
 					Message.CAGE_OPEN_IN_SECOND.broadcast();

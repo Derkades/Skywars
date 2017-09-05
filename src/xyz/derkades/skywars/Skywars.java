@@ -1,22 +1,30 @@
 package xyz.derkades.skywars;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -30,6 +38,7 @@ public class Skywars extends JavaPlugin implements Listener {
 	public static Map map;
 	public static Mode mode;
 	public static World world;
+	public static FileConfiguration data;
 	
 	@Override
 	public void onEnable() {
@@ -72,11 +81,23 @@ public class Skywars extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		
 		if (getConfig().getBoolean("enabled", false)) {
-			new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 10*20, 1*20);
+			new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 2*20, 2*20);
 		} else {
-			getLogger().warning("Automatic game starting is disabled. Set 'enabled: true' in config.yml");
+			getLogger().warning("Automatic game starting is disabled. Set 'enabled: true' in config.yml. You can start this game manually by right-clicking a beetroot.");
 		}
 		
+		String dataFilePath = getConfig().getString("data-file");
+		if (dataFilePath == null || dataFilePath.isEmpty()) {
+			disablePlugin("Invalid data file path");
+		}
+		
+		File dataFile = new File(dataFilePath);
+		
+		if (dataFile.exists()) {
+			data = YamlConfiguration.loadConfiguration(dataFile);
+		} else {
+			disablePlugin("Data file does not exist at " + dataFile.getAbsolutePath() + ". Is this the right path? Did you create the file?");
+		}
 		
 		world.setGameRuleValue("announceAdvancements", "false");
 		world.setGameRuleValue("doFireTick", "false");
@@ -107,7 +128,7 @@ public class Skywars extends JavaPlugin implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		
-		event.setJoinMessage(Message.JOIN.get(player.getName(), Bukkit.getOnlinePlayers(), map.getRequiredPlayers(mode)));
+		event.setJoinMessage(Message.JOIN.get(player.getName(), Bukkit.getOnlinePlayers().size(), map.getRequiredPlayers(mode)));
 		
 		player.setGameMode(GameMode.ADVENTURE); //So players can't break blocks in the lobby
 		player.teleport(new Location(world, 0, 176, 0));
@@ -144,6 +165,16 @@ public class Skywars extends JavaPlugin implements Listener {
 			getLogger().warning("Unsupported death cause!");
 			getLogger().warning("Cause: " + cause);
 			getLogger().warning("Killed by player: " + (killer != null));
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onDeath(PlayerInteractEvent event) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && event.getItem().getType() == Material.BEETROOT) {
+			Player player = event.getPlayer();
+			PlayerInventory inv = player.getInventory();
+			inv.setItem(inv.getHeldItemSlot(), new ItemStack(Material.AIR));
+			player.sendMessage("game will start when enough players are online");
 		}
 	}
 	
