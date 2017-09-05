@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.Location;
 
 import xyz.derkades.skywars.loot.LootChest;
+import xyz.derkades.skywars.loot.LootLevel;
 
 public enum Map {
 	
@@ -20,7 +21,47 @@ public enum Map {
 					new Point(54, 110, -52, 25, 0),
 			}, 
 			
-			null, Mode.SOLO, Mode.TEAMS);
+			new LootChest[] {
+					new LootChest(LootLevel.TWO, -4, 102, -61), new LootChest(LootLevel.TWO, -3, 102, -62),
+					new LootChest(LootLevel.TWO, 3, 102, -62), new LootChest(LootLevel.TWO, 4, 102, -61),
+					new LootChest(LootLevel.TWO, 4, 102, -55), new LootChest(LootLevel.TWO, 3, 102, -54),
+					new LootChest(LootLevel.TWO, -2, 102, -54), new LootChest(LootLevel.TWO, -4, 102, -55),
+		
+					new LootChest(LootLevel.TWO, -33, 102, -40), new LootChest(LootLevel.TWO, -32, 102, -39),
+					new LootChest(LootLevel.TWO, -32, 102, -33), new LootChest(LootLevel.TWO, -33, 102, -32),
+					new LootChest(LootLevel.TWO, -39, 102, -32), new LootChest(LootLevel.TWO, -40, 102, -33),
+					new LootChest(LootLevel.TWO, -40, 102, -39), new LootChest(LootLevel.TWO, -39, 102, -40),
+		
+					new LootChest(LootLevel.TWO, -54, 102, 3), new LootChest(LootLevel.TWO, -55, 102, 4),
+					new LootChest(LootLevel.TWO, -61, 102, 4), new LootChest(LootLevel.TWO, -62, 102, 3),
+					new LootChest(LootLevel.TWO, -62, 102, -3), new LootChest(LootLevel.TWO, -61, 102, -4),
+					new LootChest(LootLevel.TWO, -55, 102, -4), new LootChest(LootLevel.TWO, -54, 102, -3),
+		
+					new LootChest(LootLevel.TWO, -40, 102, 33), new LootChest(LootLevel.TWO, -39, 102, 32),
+					new LootChest(LootLevel.TWO, -33, 102, 32), new LootChest(LootLevel.TWO, -32, 102, 33),
+					new LootChest(LootLevel.TWO, -32, 102, 39),  new LootChest(LootLevel.TWO, -33, 102, 40),
+					new LootChest(LootLevel.TWO, -39, 102, 40), new LootChest(LootLevel.TWO, -40, 102, 39),
+		
+					new LootChest(LootLevel.TWO, -4, 102, 55), new LootChest(LootLevel.TWO, -3, 102, 54),
+					new LootChest(LootLevel.TWO, 3, 102, 54), new LootChest(LootLevel.TWO, 4, 102, 55),
+					new LootChest(LootLevel.TWO, 4, 102, 61), new LootChest(LootLevel.TWO, 3, 102, 62),
+					new LootChest(LootLevel.TWO, -3, 102, 62), new LootChest(LootLevel.TWO, -4, 102, 61),
+		
+					new LootChest(LootLevel.TWO, 32, 102, 33), new LootChest(LootLevel.TWO, 33, 102, 32),
+					new LootChest(LootLevel.TWO, 39, 102, 32), new LootChest(LootLevel.TWO, 40, 102, 33),
+					new LootChest(LootLevel.TWO, 40, 102, 39), new LootChest(LootLevel.TWO, 39, 102, 40),
+					new LootChest(LootLevel.TWO, 33, 102, 40), new LootChest(LootLevel.TWO, 32, 102, 39),
+		
+					new LootChest(LootLevel.TWO, 62, 102, 3), new LootChest(LootLevel.TWO, 61, 102, 4),
+					new LootChest(LootLevel.TWO, 55, 102, 4), new LootChest(LootLevel.TWO, 54, 102, 3),
+					new LootChest(LootLevel.TWO, 54, 102, -3), new LootChest(LootLevel.TWO, 55, 102, -4),
+					new LootChest(LootLevel.TWO, 61, 102, -4), new LootChest(LootLevel.TWO, 62, 102, -3),
+		
+					new LootChest(LootLevel.TWO, 32, 102, -32), new LootChest(LootLevel.TWO, 32, 102, -33),
+					new LootChest(LootLevel.TWO, 32, 102, -39), new LootChest(LootLevel.TWO, 33, 102, -40),
+					new LootChest(LootLevel.TWO, 39, 102, -40), new LootChest(LootLevel.TWO, 40, 102, -39),
+					new LootChest(LootLevel.TWO, 40, 102, -33), new LootChest(LootLevel.TWO, 39, 102, -32),
+			}, Mode.SOLO, Mode.TEAMS);
 	
 	private String name;
 	private Point[] points;
