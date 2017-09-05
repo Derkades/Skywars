@@ -11,6 +11,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 
 import xyz.derkades.derkutils.Random;
+import xyz.derkades.derkutils.bukkit.ItemBuilder;
 import xyz.derkades.skywars.Skywars;
 
 public class LootChest {
@@ -18,7 +19,7 @@ public class LootChest {
 	private LootLevel level;
 	private Location location;
 
-	LootChest(LootLevel level, int x, int y, int z) {
+	public LootChest(LootLevel level, int x, int y, int z) {
 		this.level = level;
 		this.location = new Location(Skywars.world, x, y, z);
 	}
@@ -46,7 +47,7 @@ public class LootChest {
 		LootItem[] loot = level.items;
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for (LootItem item : loot)
-			items.add(new ItemStack(item.getMaterial(), item.getRandomAmount()));
+			items.add(new ItemBuilder(item.getMaterial()).data(item.getData()).amount(item.getRandomAmount()).create());
 		List<ItemStack> contents = Arrays.asList(chest.getInventory().getContents());
 
 		for (ItemStack item : items) {
