@@ -48,8 +48,10 @@ public class LootChest {
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for (LootItem item : loot)
 			items.add(new ItemBuilder(item.getMaterial()).data(item.getData()).amount(item.getRandomAmount()).create());
+		
+		chest.getInventory().clear();
 		List<ItemStack> contents = Arrays.asList(chest.getInventory().getContents());
-
+		
 		for (ItemStack item : items) {
 			int slot = Random.getRandomInteger(0, 27);
 			contents.set(slot, item);
