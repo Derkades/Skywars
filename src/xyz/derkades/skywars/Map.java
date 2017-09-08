@@ -22,6 +22,30 @@ public enum Map {
 			}, 
 			
 			new LootChest[] {
+					new LootChest(LootLevel.ONE, 63, 104, 54), new LootChest(LootLevel.ONE, 64, 105, 55), new LootChest(LootLevel.ONE, 65, 107, 61), 
+					new LootChest(LootLevel.ONE, 64, 107, 63), new LootChest(LootLevel.ONE, 53, 104, 64), new LootChest(LootLevel.ONE, 52, 103, 63),
+					
+					new LootChest(LootLevel.ONE, 7, 104, 96), new LootChest(LootLevel.ONE, 6, 107, 101), new LootChest(LootLevel.ONE, -2, 106, 101), 
+					new LootChest(LootLevel.ONE, -4, 105, 99),new LootChest(LootLevel.ONE, -7, 104, 95), new LootChest(LootLevel.ONE, -8, 103, 94),
+					
+					new LootChest(LootLevel.ONE, -55, 103, 62), new LootChest(LootLevel.ONE, -56, 105, 64), new LootChest(LootLevel.ONE, -62, 105, 63), 
+					new LootChest(LootLevel.ONE, -63, 105, 62), new LootChest(LootLevel.ONE, -64, 105, 54), new LootChest(LootLevel.ONE, -52, 103, 56),
+					
+					new LootChest(LootLevel.ONE, -96, 104, 7), new LootChest(LootLevel.ONE, -98, 105, 6), new LootChest(LootLevel.ONE, -102, 107, 1), 
+					new LootChest(LootLevel.ONE, -101, 106, -2), new LootChest(LootLevel.ONE, -96, 104, -6), new LootChest(LootLevel.ONE, -94, 103, -8),
+					
+					new LootChest(LootLevel.ONE, -63, 104, -55), new LootChest(LootLevel.ONE, -64, 105, -56), new LootChest(LootLevel.ONE, -64, 105, -59), 
+					new LootChest(LootLevel.ONE, -53, 104, -64), new LootChest(LootLevel.ONE, -63, 105, -62), new LootChest(LootLevel.ONE, -54, 105, -64),
+					
+					new LootChest(LootLevel.ONE, 8, 103, -94), new LootChest(LootLevel.ONE, 2, 106, -101), new LootChest(LootLevel.ONE, 6, 103, -95), 
+					new LootChest(LootLevel.ONE, -1, 106, -101), new LootChest(LootLevel.ONE, -6, 105, -98), new LootChest(LootLevel.ONE, -7, 104, -96),
+					
+					new LootChest(LootLevel.ONE, 54, 104, -63), new LootChest(LootLevel.ONE, 55, 105, -64), new LootChest(LootLevel.ONE, 60, 106, -65),
+					new LootChest(LootLevel.ONE, 64, 104, -53), new LootChest(LootLevel.ONE, 64, 106, -62), new LootChest(LootLevel.ONE, 60, 100, -46),
+					
+					new LootChest(LootLevel.ONE, 94, 103, -7), new LootChest(LootLevel.ONE, 94, 103, 8), new LootChest(LootLevel.ONE, 97, 105, -7), 
+					new LootChest(LootLevel.ONE, 102, 108, -5), new LootChest(LootLevel.ONE, 102, 107, -2), new LootChest(LootLevel.ONE, 98, 107, 7),
+					
 					new LootChest(LootLevel.TWO, -4, 102, -61), new LootChest(LootLevel.TWO, -3, 102, -62),
 					new LootChest(LootLevel.TWO, 3, 102, -62), new LootChest(LootLevel.TWO, 4, 102, -61),
 					new LootChest(LootLevel.TWO, 4, 102, -55), new LootChest(LootLevel.TWO, 3, 102, -54),
