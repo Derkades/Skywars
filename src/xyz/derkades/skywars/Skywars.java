@@ -99,6 +99,10 @@ public class Skywars extends JavaPlugin implements Listener {
 			disablePlugin("Data file does not exist at " + dataFile.getAbsolutePath() + ". Is this the right path? Did you create the file?");
 		}
 		
+		getLogger().warning("This world will not be saved. When you reboot the server all changes will be reset. If you wish to make changes, save manually using /save-all");
+		
+		world.setAutoSave(false);
+		
 		world.setGameRuleValue("announceAdvancements", "false");
 		world.setGameRuleValue("doFireTick", "false");
 		world.setGameRuleValue("doMobLoot", "false");
