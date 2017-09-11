@@ -7,6 +7,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -136,6 +137,9 @@ public class Skywars extends JavaPlugin implements Listener {
 		
 		player.setGameMode(GameMode.ADVENTURE); //So players can't break blocks in the lobby
 		player.teleport(new Location(world, 0, 176, 0));
+		
+		player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+		player.setFoodLevel(20);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -173,12 +177,13 @@ public class Skywars extends JavaPlugin implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onDeath(PlayerInteractEvent event) {
+	public void onInteract(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && event.getItem().getType() == Material.BEETROOT) {
 			Player player = event.getPlayer();
 			PlayerInventory inv = player.getInventory();
 			inv.setItem(inv.getHeldItemSlot(), new ItemStack(Material.AIR));
 			player.sendMessage("game will start when enough players are online");
+			new StartGameWhenEnoughPlayers().runTaskTimer(plugin, 2*20, 2*20);
 		}
 	}
 	

@@ -17,28 +17,27 @@ import xyz.derkades.skywars.Skywars;
 public class LootChest {
 	
 	private LootLevel level;
-	private Location location;
+	private int x;
+	private int y;
+	private int z;
 
 	public LootChest(LootLevel level, int x, int y, int z) {
 		this.level = level;
-		this.location = new Location(Skywars.world, x, y, z);
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	public LootLevel getLevel() {
 		return level;
 	}
 
-	public Location getLocation() {
-		return location;
-	}
-
 	public void fill() {
-		Block block = location.getBlock();
+		Block block = new Location(Skywars.world, x, y, z).getBlock();
 		
 		if (block.getType() != Material.CHEST) {
 			Skywars.plugin.getLogger().warning(String.format(
-					"Block at %s, %s, %s should be a chest but is not. Has the block been destroyed? Are coordinates wrong?",
-					location.getX(), location.getY(), location.getZ()));
+					"Block at %s, %s, %s should be a chest but is not. Has the block been destroyed? Are coordinates wrong?", x, y, z));
 			return;
 		}
 				
@@ -53,7 +52,7 @@ public class LootChest {
 		List<ItemStack> contents = Arrays.asList(chest.getInventory().getContents());
 		
 		for (ItemStack item : items) {
-			int slot = Random.getRandomInteger(0, 27);
+			int slot = Random.getRandomInteger(0, 26);
 			contents.set(slot, item);
 		}
 

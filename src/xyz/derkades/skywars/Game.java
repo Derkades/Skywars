@@ -70,7 +70,7 @@ public class Game {
 					Message.CAGES_OPENED.broadcast();
 					
 					for (Player player : Bukkit.getOnlinePlayers()) {
-						player.setGameMode(GameMode.ADVENTURE);
+						player.setGameMode(GameMode.SURVIVAL);
 					}
 					
 					openCages();
@@ -139,10 +139,22 @@ public class Game {
 	
 	private String getClockString(int secondsLeft) {
 		if (secondsLeft < 60) {
-			return "0:" + secondsLeft;
+			if (String.valueOf(secondsLeft).length() == 1) {
+				return "00:0" + secondsLeft;
+			}
+			
+			return "00:" + secondsLeft;
 		} else {
-			int minutes = secondsLeft / 60;
-			int seconds = secondsLeft % 60;
+			String minutes = String.valueOf(secondsLeft / 60);
+			String seconds = String.valueOf(secondsLeft % 60);
+			
+			if (seconds.length() == 1)
+				seconds = "0" + seconds;
+			
+			if (minutes.length() == 1)
+				minutes = "0" + minutes;
+			
+			
 			return minutes + ":" + seconds;
 		}
 	}
