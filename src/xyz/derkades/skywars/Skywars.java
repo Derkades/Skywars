@@ -178,7 +178,7 @@ public class Skywars extends JavaPlugin implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onInteract(PlayerInteractEvent event) {
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && event.getItem().getType() == Material.BEETROOT) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getHand() == EquipmentSlot.HAND && event.getItem() != null && event.getItem().getType() == Material.BEETROOT) {
 			Player player = event.getPlayer();
 			PlayerInventory inv = player.getInventory();
 			inv.setItem(inv.getHeldItemSlot(), new ItemStack(Material.AIR));
