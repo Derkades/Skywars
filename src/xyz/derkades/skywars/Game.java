@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.coloredcarrot.api.sidebar.Sidebar;
@@ -71,6 +72,7 @@ public class Game {
 					
 					for (Player player : Bukkit.getOnlinePlayers()) {
 						player.setGameMode(GameMode.SURVIVAL);
+						player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20, 0, true, false));
 					}
 					
 					openCages();
