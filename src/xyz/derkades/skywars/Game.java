@@ -77,7 +77,7 @@ public class Game {
 				}
 				
 				if (secondsLeft == 10*60) {
-					Message.MINUTES_LEFT.broadcast(5);
+					Message.MINUTES_LEFT.broadcast(10);
 				} else if (secondsLeft == 5*60) {
 					Message.MINUTES_LEFT.broadcast(5);
 				} else if (secondsLeft == 60) {
