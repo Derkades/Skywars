@@ -46,6 +46,7 @@ public enum Map {
 					new LootChest(LootLevel.ONE, 94, 103, -7), new LootChest(LootLevel.ONE, 94, 103, 8), new LootChest(LootLevel.ONE, 97, 105, -7), 
 					new LootChest(LootLevel.ONE, 102, 108, -5), new LootChest(LootLevel.ONE, 102, 107, -2), new LootChest(LootLevel.ONE, 98, 107, 7),
 					
+						
 					new LootChest(LootLevel.TWO, -4, 102, -61), new LootChest(LootLevel.TWO, -3, 102, -62),
 					new LootChest(LootLevel.TWO, 3, 102, -62), new LootChest(LootLevel.TWO, 4, 102, -61),
 					new LootChest(LootLevel.TWO, 4, 102, -55), new LootChest(LootLevel.TWO, 3, 102, -54),
@@ -85,6 +86,19 @@ public enum Map {
 					new LootChest(LootLevel.TWO, 32, 102, -39), new LootChest(LootLevel.TWO, 33, 102, -40),
 					new LootChest(LootLevel.TWO, 39, 102, -40), new LootChest(LootLevel.TWO, 40, 102, -39),
 					new LootChest(LootLevel.TWO, 40, 102, -33), new LootChest(LootLevel.TWO, 39, 102, -32),
+					
+					
+					new LootChest(LootLevel.THREE, 16, 101, -10), new LootChest(LootLevel.THREE, 10, 101, 16),
+					new LootChest(LootLevel.THREE, 16, 101, 10), new LootChest(LootLevel.THREE, -10, 101, 16),
+					
+					new LootChest(LootLevel.THREE, -16, 101, 10), new LootChest(LootLevel.THREE, -10, 101, -16),
+					new LootChest(LootLevel.THREE, -16, 101, -10), new LootChest(LootLevel.THREE, 10, 101, -16),
+					
+					new LootChest(LootLevel.THREE, 5, 100, 5), new LootChest(LootLevel.THREE, -5, 100, -5),
+					new LootChest(LootLevel.THREE, -5, 100, 5), new LootChest(LootLevel.THREE, 5, 100, -5),
+					
+					new LootChest(LootLevel.THREE, 1, 100, 0), new LootChest(LootLevel.THREE, 0, 100, -1),
+					new LootChest(LootLevel.THREE, -1, 100, 0), new LootChest(LootLevel.THREE, 0, 100, 1),
 			}, Mode.SOLO, Mode.TEAMS);
 	
 	private String name;
