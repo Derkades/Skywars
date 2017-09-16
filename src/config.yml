@@ -28,7 +28,7 @@ kits: # Use this website to generate commands for fancy items: http://mapmaking.
      - 'give {player} stone 32'
      - 'give {player} minecraft:golden_sword 1 0 {display:{Name:"§5Sword of Death",Lore:["Some lore","Second line"]},Unbreakable:1,ench:[{id:17,lvl:2},{id:19,lvl:7}]}'
   
-  3:
+  1:
     item: WOOL
     data: 3
     name: 'Second sample kit'
