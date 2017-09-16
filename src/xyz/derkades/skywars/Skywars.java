@@ -1,6 +1,10 @@
 package xyz.derkades.skywars;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -41,9 +45,15 @@ public class Skywars extends JavaPlugin implements Listener {
 	public static World world;
 	public static FileConfiguration data;
 	
+	public static List<UUID> alive;
+	public static java.util.Map<UUID, Integer> kills;
+	
 	@Override
 	public void onEnable() {
 		plugin = this;
+		
+		alive = new ArrayList<>();
+		kills = new HashMap<>();
 		
 		saveDefaultConfig();
 		
@@ -114,6 +124,8 @@ public class Skywars extends JavaPlugin implements Listener {
 		
 		world.setGameRuleValue("doDaylightCycle", "false");
 		world.setTime(6000);
+		
+		getServer().getScheduler().runTaskTimer(this, () -> world.setStorm(false), 20, 20);
 	}
 	
 	private void disablePlugin(String reason) {
@@ -146,7 +158,9 @@ public class Skywars extends JavaPlugin implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		
-		event.setQuitMessage(Message.QUIT.get(player.getName()));				
+		event.setQuitMessage(Message.QUIT.get(player.getName()));
+		
+		alive.remove(player.getUniqueId());
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -158,21 +172,38 @@ public class Skywars extends JavaPlugin implements Listener {
 		
 		if (killer != null && cause == DamageCause.VOID) {
 			event.setDeathMessage(Message.KNOCKED_IN_VOID_BY.get(player.getName(), killer.getName()));
+			addKill(killer);
 		} else if (killer == null && cause == DamageCause.VOID) {
 			event.setDeathMessage(Message.FELL_IN_VOID.get(player.getName()));
 		} else if (killer != null && (cause == DamageCause.ENTITY_ATTACK || cause == DamageCause.ENTITY_SWEEP_ATTACK)) {
 			event.setDeathMessage(Message.KILLED_BY.get(player.getName(), killer.getName()));
+			addKill(killer);
 		} else if (killer != null && cause == DamageCause.MAGIC) {
 			event.setDeathMessage(Message.KILLED_USING_MAGIC_BY.get(player.getName(), killer.getName()));
+			addKill(killer);
 		} else if (killer == null && cause == DamageCause.FALL) {
 			event.setDeathMessage(Message.FELL_FROM_HIGH_PLACE.get(player.getName()));
 		} else if (killer != null && cause == DamageCause.FALL) {
 			event.setDeathMessage(Message.FELL_FROM_HIGH_PLACE_BY.get(player.getName(), killer.getName()));
+			addKill(killer);
 		} else {
 			event.setDeathMessage("");
 			getLogger().warning("Unsupported death cause!");
 			getLogger().warning("Cause: " + cause);
 			getLogger().warning("Killed by player: " + (killer != null));
+		}
+		
+		player.setGameMode(GameMode.SPECTATOR);
+		alive.remove(player.getUniqueId());
+		SkywarsPlayer skywarsPlayer = new SkywarsPlayer(player);
+		skywarsPlayer.addDeath();
+	}
+	
+	private void addKill(LivingEntity killer) {
+		if (kills.containsKey(killer.getUniqueId())) {
+			kills.put(killer.getUniqueId(), kills.get(killer.getUniqueId()) + 1);
+		} else {
+			kills.put(killer.getUniqueId(), 1);
 		}
 	}
 	

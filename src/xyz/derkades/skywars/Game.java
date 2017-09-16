@@ -7,13 +7,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.coloredcarrot.api.sidebar.Sidebar;
 import com.coloredcarrot.api.sidebar.SidebarString;
 
+import net.md_5.bungee.api.ChatColor;
 import xyz.derkades.derkutils.ListUtils;
 import xyz.derkades.derkutils.bukkit.Colors;
 import xyz.derkades.skywars.loot.LootChest;
@@ -73,6 +76,7 @@ public class Game {
 					for (Player player : Bukkit.getOnlinePlayers()) {
 						player.setGameMode(GameMode.SURVIVAL);
 						player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20, 0, true, false));
+						Skywars.alive.add(player.getUniqueId());
 					}
 					
 					openCages();
@@ -177,7 +181,26 @@ public class Game {
 		//Hide sidebar
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			sidebar.hideFrom(player);
+			player.teleport(new Location(Skywars.world, 0.5, 101, 0.5));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20, 0, true, false));
 		}
+		
+		EnderDragon dragon = Skywars.world.spawn(new Location(Skywars.world, 0, 120, 0), EnderDragon.class);
+		dragon.setCollidable(false);
+		dragon.setGlowing(true);
+		dragon.setInvulnerable(true);
+		dragon.setCustomName(ChatColor.GOLD + "Deathmatch");
+	}
+	
+	private void gameEnd() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			SkywarsPlayer skywarsPlayer = new SkywarsPlayer(player);
+			if (Skywars.kills.containsKey(player.getUniqueId())) {
+				skywarsPlayer.addKills(Skywars.kills.get(player.getUniqueId()));
+			}
+		}
+		
+		//TODO shutdown server after sending players back to lobby server
 	}
 
 }

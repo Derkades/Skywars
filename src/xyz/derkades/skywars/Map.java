@@ -17,8 +17,14 @@ public enum Map {
 	INFERNO("Inferno", 
 			
 			new Point[] {
-					//new Point(0, 110, -87, 0, 0),
-					new Point(54, 110, -52, 25, 0),
+					new Point(0, 110, -87, 0),
+					//new Point(54, 110, -52, 45),
+					//new Point(88, 110, 0, 90),
+					//new Point(53, 110, 54, 135),
+					//new Point(0, 110, 88, 180),
+					//new Point(-53, 110, 53, -135),
+					//new Point(-87, 110, 0, -90),
+					//new Point(-52, 110, -53, -45),
 			}, 
 			
 			new LootChest[] {
@@ -124,7 +130,7 @@ public enum Map {
 		
 		List<Location> locations = new ArrayList<>();
 		for (Point point : points) {
-			locations.add(new Location(Skywars.world, point.x, point.y, point.z, point.yaw, point.pitch));
+			locations.add(new Location(Skywars.world, point.x, point.y, point.z, point.yaw, 0));
 		}
 		
 		return locations;
@@ -167,14 +173,12 @@ public enum Map {
 		private double y;
 		private double z;
 		private float yaw;
-		private float pitch;
 		
-		Point(int x, int y, int z, float yaw, float pitch){
+		Point(int x, int y, int z, float yaw){
 			this.x = x;
 			this.y = y;
 			this.z = z;
 			this.yaw = yaw;
-			this.pitch = pitch;
 		}
 
 	}
